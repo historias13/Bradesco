@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bradesco</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header Minimalista */
+        .app-header {
+            background: #CC092F;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .app-name {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-icons i {
+            font-size: 18px;
+        }
+        
+        /* Account Info */
+        .account-info {
+            background: #CC092F;
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .user-name:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .notification {
+            position: relative;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FFD700;
+            color: #CC092F;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .balance-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .balance-value {
+            font-size: 26px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .balance-value:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .account-vat {
+            font-size: 12px;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        /* Menu Principal Compacto */
+        .main-menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .menu-icon {
+            width: 45px;
+            height: 45px;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            color: #CC092F;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:active .menu-icon {
+            background-color: #CC092F;
+            color: white;
+            transform: scale(0.95);
+        }
+        
+        .menu-name {
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* Search Bar Compacta */
+        .search-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 12px 15px;
+            margin: 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .search-icon {
+            color: #CC092F;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .search-input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: #666;
+            background: transparent;
+        }
+        
+        /* Section Titles Compactos */
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 15px 10px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .see-all {
+            font-size: 14px;
+            color: #CC092F;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        
+        /* Favorites Grid Compacto */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        
+        .favorite-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .favorite-icon {
+            width: 45px;
+            height: 45px;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: #CC092F;
+            font-size: 18px;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s;
+        }
+        
+        .favorite-item:active .favorite-icon {
+            background-color: #CC092F;
+            color: white;
+            transform: scale(0.95);
+        }
+        
+        .favorite-name {
+            font-size: 12px;
+            color: #333;
+        }
+        
+        /* Promo Banner Compacto */
+        .promo-banner {
+            background: linear-gradient(135deg, #CC092F, #a50626);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 0 15px 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .promo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .promo-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .promo-content p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        /* Divider */
+        .divider {
+            height: 6px;
+            background-color: #f0f0f0;
+            margin: 20px 0;
+        }
+        
+        /* Benefits Section Compacto */
+        .benefits-section {
+            padding: 0 15px 25px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .benefit-item {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .benefit-item:active {
+            transform: scale(0.98);
+            background-color: #f0f0f0;
+        }
+        
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #CC092F, #a50626);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .benefit-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .benefit-description {
+            font-size: 11px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        /* Bottom Navigation Compacta */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #e0e0e0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            font-size: 12px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            color: #CC092F;
+        }
+        
+        .nav-item:active {
+            color: #CC092F;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        /* BIA Assistant */
+        .bia-assistant {
+            position: fixed;
+            bottom: 60px;
+            right: 15px;
+            width: 50px;
+            height: 50px;
+            background: #CC092F;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 3px 10px rgba(204, 9, 47, 0.3);
+            z-index: 100;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .bia-assistant:active {
+            transform: scale(0.95);
+        }
+        
+        /* Face ID Screen */
+        .faceid-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            z-index: 2000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .faceid-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .faceid-icon {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .faceid-animation {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+        }
+        
+        .faceid-animation::before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #1a1a1a;
+        }
+        
+        .faceid-animation::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+        
+        .faceid-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .faceid-subtext {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .faceid-progress {
+            width: 200px;
+            height: 4px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        
+        .faceid-progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            border-radius: 2px;
+            animation: progressFill 2s ease-in-out forwards;
+        }
+        
+        @keyframes progressFill {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
+        .confirmation-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4CAF50;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in 2s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .confirmation-text i {
+            font-size: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Edit Modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .edit-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 350px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .edit-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .edit-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .edit-input:focus {
+            border-color: #CC092F;
+            outline: none;
+        }
+        
+        .edit-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .edit-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .edit-cancel {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .edit-save {
+            background-color: #CC092F;
+            color: white;
+        }
+        
+        .edit-button:active {
+            transform: scale(0.95);
+        }
+        
+        /* Safe Area for Notch */
+        .safe-area {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</head>
+<body>
+    <!-- Tela do Face ID -->
+    <div id="faceid-screen" class="faceid-screen">
+        <div class="faceid-container">
+            <div class="faceid-icon">
+                <div class="faceid-animation"></div>
+            </div>
+            
+            <div class="faceid-text">Reconhecimento Facial</div>
+            <div class="faceid-subtext">
+                Posicione seu rosto no centro da tela
+            </div>
+            
+            <div class="faceid-progress">
+                <div class="faceid-progress-bar"></div>
+            </div>
+            
+            <div class="confirmation-text">
+                <i class="fas fa-check-circle"></i>
+                Reconhecido com sucesso
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tela Principal do App -->
+    <div id="app-screen" class="container safe-area" style="display: none;">
+        <!-- Header com nome Bradesco -->
+        <div class="app-header">
+            <div class="app-name">Bradesco</div>
+            <div class="header-icons">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+        
+        <!-- Informações da Conta -->
+        <div class="account-info">
+            <div class="user-info">
+                <div class="user-name" id="editable-name">Maria Luiza do Carmo</div>
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                </div>
+            </div>
+            
+            <div class="balance-info">
+                <div class="balance-label">Saldo disponível</div>
+                <div class="balance-value" id="editable-balance">R$ 12.458,73</div>
+            </div>
+            
+            <div class="account-vat">Vat. excitado</div>
+        </div>
+        
+        <!-- Menu Principal -->
+        <div class="main-menu">
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="menu-name">Transferir</div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <i class="fas fa-barcode"></i>
+                </div>
+                <div class="menu-name">Pagar</div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="menu-name">Recarga</div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="menu-name">PIX</div>
+            </div>
+        </div>
+        
+        <!-- Barra de Pesquisa -->
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Buscar serviço ou falar com a BIA">
+        </div>
+        
+        <!-- Seção de Favoritos -->
+        <div class="section-title">
+            Favoritos
+            <a href="#" class="see-all">Ver todos</a>
+        </div>
+        
+        <div class="favorites-grid">
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="favorite-name">Transferências</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="favorite-name">Plc</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="favorite-name">Programmas</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="favorite-name">Carteira</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="favorite-name">3C</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="favorite-name">Enquetes</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="favorite-name">Investimentos</div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="favorite-name">Personalizar</div>
+            </div>
+        </div>
+        
+        <!-- Banner Promocional -->
+        <div class="promo-banner">
+            <div class="promo-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="promo-content">
+                <h3>O Plc no Bradesco está ainda melhor</h3>
+                <p>Plc com seguro contra golpe</p>
+            </div>
+        </div>
+        
+        <!-- Divisor -->
+        <div class="divider"></div>
+        
+        <!-- Seção de Benefícios -->
+        <div class="benefits-section">
+            <div class="section-title">
+                Benefícios e parcerias
+                <a href="#" class="see-all">Ver todos</a>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="benefit-name">Mimos para você aproveitar</div>
+                    <div class="benefit-description">Descontos exclusivos</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <div class="benefit-name">Tag da pista</div>
+                    <div class="benefit-description">Sem parar, sem filas</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="benefit-name">Empresas, coligadas e vícios</div>
+                    <div class="benefit-description">Soluções corporativas</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="benefit-name">Com condições ricas</div>
+                    <div class="benefit-description">Planos e seguros</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assistente BIA -->
+        <div class="bia-assistant">
+            <i class="fas fa-microphone"></i>
+        </div>
+        
+        <!-- Navegação Inferior -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-home nav-icon"></i>
+                <span>Início</span>
+            </div>
+            
+            <div class="nav-item">
+                <i class="fas fa-credit-card nav-icon"></i>
+                <span>Cartões</span>
+            </div>
+            
+            <div class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span>Investir</span>
+            </div>
+            
+            <div class="nav-item">
+                <i class="fas fa-bars nav-icon"></i>
+                <span>Mais</span>
+            </div>
+        </div>
+        
+        <!-- Modal de Edição -->
+        <div id="edit-modal" class="edit-modal">
+            <div class="edit-modal-content">
+                <h2 class="edit-modal-title" id="edit-modal-title">Editar</h2>
+                <input type="text" id="edit-input" class="edit-input" placeholder="Digite o novo valor">
+                <div class="edit-buttons">
+                    <button id="edit-cancel" class="edit-button edit-cancel">Cancelar</button>
+                    <button id="edit-save" class="edit-button edit-save">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos da tela
+            const faceIdScreen = document.getElementById('faceid-screen');
+            const appScreen = document.getElementById('app-screen');
+            
+            // Elementos para edição
+            const editableName = document.getElementById('editable-name');
+            const editableBalance = document.getElementById('editable-balance');
+            const editModal = document.getElementById('edit-modal');
+            const editModalTitle = document.getElementById('edit-modal-title');
+            const editInput = document.getElementById('edit-input');
+            const editCancel = document.getElementById('edit-cancel');
+            const editSave = document.getElementById('edit-save');
+            
+            let currentEditingElement = null;
+            
+            // Inicialmente mostrar apenas o Face ID
+            faceIdScreen.style.display = 'flex';
+            appScreen.style.display = 'none';
+            editModal.style.display = 'none';
+            
+            // Simular processo de Face ID
+            setTimeout(function() {
+                // Mostrar confirmação
+                document.querySelector('.confirmation-text').style.display = 'flex';
+                
+                // Acesso automático à conta após confirmação
+                setTimeout(function() {
+                    faceIdScreen.style.display = 'none';
+                    appScreen.style.display = 'block';
+                }, 1500);
+            }, 2500);
+            
+            // Função para editar o nome
+            editableName.addEventListener('click', function() {
+                currentEditingElement = editableName;
+                editModalTitle.textContent = 'Editar Nome';
+                editInput.value = editableName.textContent;
+                editModal.style.display = 'flex';
+            });
+            
+            // Função para editar o saldo
+            editableBalance.addEventListener('click', function() {
+                currentEditingElement = editableBalance;
+                editModalTitle.textContent = 'Editar Saldo';
+                editInput.value = editableBalance.textContent;
+                editModal.style.display = 'flex';
+            });
+            
+            // Cancelar edição
+            editCancel.addEventListener('click', function() {
+                editModal.style.display = 'none';
+                currentEditingElement = null;
+            });
+            
+            // Salvar edição
+            editSave.addEventListener('click', function() {
+                if (currentEditingElement && editInput.value.trim() !== '') {
+                    currentEditingElement.textContent = editInput.value;
+                    editModal.style.display = 'none';
+                    currentEditingElement = null;
+                }
+            });
+            
+            // Fechar modal ao clicar fora dele
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    editModal.style.display = 'none';
+                    currentEditingElement = null;
+                }
+            });
+
+            // Interações da conta
+            document.querySelector('.bia-assistant').addEventListener('click', function() {
+                alert('Olá! Sou o BIA, seu assistente virtual. Como posso ajudar?');
+            });
+        });
+    </script>
+</body>
+</html>
